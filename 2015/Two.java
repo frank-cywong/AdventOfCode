@@ -10,6 +10,7 @@ public class Two{
     }
     String[] data = rawdata.split("\n");
     int total = 0;
+    int totalbow = 0;
     int sa,sb,sc,a,b,c;
     String[] temp;
     for(int i = 0; i < data.length; i++){
@@ -27,7 +28,10 @@ public class Two{
       total += (2 * sb);
       total += (2 * sc);
       total += Math.min(Math.min(sa,sb),sc);
+      totalbow += 2*(Math.min(Math.min(a+b,b+c),a+c));
+      totalbow += a * b * c;
     }
     System.out.println(total);
+    System.out.println(totalbow);
   }
 }
