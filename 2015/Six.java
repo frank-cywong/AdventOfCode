@@ -37,24 +37,24 @@ public class Six{
 			curchar = (char)f.read();
 			if(curchar == '\n'){
 				coords = temp.split(" through ");
-				x1 = coords[0].split(",")[0];
-				y1 = coords[0].split(",")[1];
-				x2 = coords[1].split(",")[0];
-				y2 = coords[1].split(",")[1];
+				x1 = Integer.parseInt(coords[0].split(",")[0]);
+				y1 = Integer.parseInt(coords[0].split(",")[1]);
+				x2 = Integer.parseInt(coords[1].split(",")[0]);
+				y2 = Integer.parseInt(coords[1].split(",")[1]);
 				switch(mode){
 					case 1:
-						mode = 0;
 						on(x1,y1,x2,y2);
 						break;
 					case 2:
-						mode = 0;
 						off(x1,y1,x2,y2);
 						break;
 					case 3:
-						mode = 0;
 						toggle(x1,y1,x2,y2);
 						break;
 				}
+				mode = 0;
+				temp = "";
+				continue;
 			}
 			temp += curchar;
 			if(temp.equals("turn on ")){
