@@ -9,7 +9,7 @@ public class Four{
 		while(true){
 			md.update((key+i).getBytes());
 			hash = md.digest();
-			if(hash[0] == 0 && hash[1] == 0 && ((hash[2] & (byte)0xF0) == 0)){
+			if(hash[0] == 0 && hash[1] == 0 && hash[2] == 0){
 				System.out.println(i);
 				return;
 			}
