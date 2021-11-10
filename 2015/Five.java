@@ -1,4 +1,5 @@
 import java.io.*;
+import java.util.*;
 public class Five{
 	public static boolean isVowel(char c){
 		return(c == 'a' || c == 'e' || c == 'i' || c == 'o' || c == 'u');
@@ -29,6 +30,29 @@ public class Five{
 		}
 		return false;
 	}
+	public static boolean isNiceTwo(String s){
+		Set<String> repeated = new HashSet<String>();
+		boolean overlap = false;
+		boolean letterbetween = false;
+		String lastpair = "";
+		for(int i = 0; i < s.length(); i++){
+			if(!overlap && (i < s.length() - 2)){
+				if(repeated.contains(s.substring(i, i+2))){
+					overlap = true;
+				} else {
+				repeated.add(lastpair);
+				lastpair = s.substring(i,i+2);
+				}
+			}
+			if(!letterbetween && (i < s.length() - 2) && (s.charAt(i) == s.charAt(i+2))){
+				letterbetween = true;
+			}
+			if(overlap && letterbetween){
+				return true;
+			}
+		}
+		return false;
+	}
 	public static void main(String[] args) throws IOException{
 		FileInputStream f = new FileInputStream(args[0]);
 		String temp = "";
@@ -40,7 +64,7 @@ public class Five{
 			if(curchar != '\n'){
 				temp += curchar;
 			} else {
-				if(isNice(temp)){
+				if(isNiceTwo(temp)){
 					count++;
 				}
 				temp = "";
