@@ -1,28 +1,26 @@
 import java.io.*;
 public class Six{
-	static boolean[][] state = new boolean[1000][1000];
+	static int[][] state = new int[1000][1000];
 	public static void toggle(int x1, int y1, int x2, int y2){
 		for(int i = x1; i <= x2; i++){
 			for(int j = y1; j <= y2; j++){
-				if(state[i][j]){
-					state[i][j] = false;
-				} else {
-					state[i][j] = true;
-				}
+				state[i][j] += 2;
 			}
 		}
 	}
 	public static void off(int x1, int y1, int x2, int y2){
 		for(int i = x1; i <= x2; i++){
 			for(int j = y1; j <= y2; j++){
-				state[i][j] = false;
+				if(state[i][j] > 0){
+					state[i][j]--;
+				}
 			}
 		}
 	}
 	public static void on(int x1, int y1, int x2, int y2){
 		for(int i = x1; i <= x2; i++){
 			for(int j = y1; j <= y2; j++){
-				state[i][j] = true;
+				state[i][j] += 1;
 			}
 		}
 	}
@@ -70,12 +68,10 @@ public class Six{
 				temp = "";
 			}
 		}
-		int count = 0;
+		long count = 0;
 		for(int i = 0; i < 1000; i++){
 			for(int j = 0; j < 1000; j++){
-				if(state[i][j]){
-					count++;
-				}
+				count += (long)state[i][j];
 			}
 		}
 		System.out.println(count);
