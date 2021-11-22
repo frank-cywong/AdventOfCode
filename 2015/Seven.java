@@ -37,8 +37,8 @@ public class Seven{
       }
       temp = curinstruction.split(" -> ");
       nodes.put(temp[1], parseNode(temp[0]));
+      curinstruction = "";
     }
-    System.out.println(nodes.toString());
-    //System.out.println(nodes.get(args[1]).getValue());
+    System.out.println((int)nodes.get(args[1]).getValue());
   }
 }

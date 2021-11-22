@@ -41,4 +41,7 @@ public class SevenTreeNode{
     valueset = true;
     return value;
   }
+  public String toString(){
+    return("Node with l = "+l_node+", r = "+r_node+", mode = "+mode+", value = "+getValue());
+  }
 }
