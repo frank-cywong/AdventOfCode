@@ -12,6 +12,9 @@ public class Seven{
       if(temp[0].equals("NOT")){
         return(new SevenTreeNode(temp[1],null,5,nodes));
       }
+      if(temp.length == 1){
+        return(new SevenTreeNode(temp[0],null,6,nodes));
+      }
       if(temp[1].equals("AND")){
         return(new SevenTreeNode(temp[0],temp[2],1,nodes));
       }

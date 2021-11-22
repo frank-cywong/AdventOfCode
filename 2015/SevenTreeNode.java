@@ -37,6 +37,9 @@ public class SevenTreeNode{
       case 5: // NOT
         value = (char)(~nodemap.get(l_node).getValue());
         break;
+      case 6: // nothing
+        value = (nodemap.get(l_node).getValue());
+        break;
     }
     valueset = true;
     return value;
