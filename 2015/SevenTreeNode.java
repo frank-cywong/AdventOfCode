@@ -23,7 +23,18 @@ public class SevenTreeNode{
     }
     switch (mode){
       case 1: // AND
-        value = (char)(nodemap.get(l_node).getValue() & nodemap.get(r_node).getValue());
+        char p1, p2;
+        try{
+          p1 = (char)Integer.parseInt(l_node);
+        } catch (NumberFormatException e){
+          p1 = (char)(nodemap.get(l_node).getValue());
+        }
+        try{
+          p2 = (char)Integer.parseInt(r_node);
+        } catch (NumberFormatException e){
+          p2 = (char)(nodemap.get(r_node).getValue());
+        }
+        value = (char)(p1 & p2);
         break;
       case 2: // OR
         value = (char)(nodemap.get(l_node).getValue() | nodemap.get(r_node).getValue());
