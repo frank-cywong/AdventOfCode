@@ -10,18 +10,20 @@ public class Eight{
       temp = in.nextLine();
       for(int i = 0; i < temp.length(); i++){
         if(temp.charAt(i) == '"'){
-          output++;
+          output++; // for both part 1 and 2
         }
         if(temp.charAt(i) == '\\'){
-          if(temp.charAt(i+1) == 'x'){
-            i += 3;
-            output += 3;
-          } else {
-            i += 1;
-            output += 1;
+          output++; //for part 1 and 2
+          //i++; // for part 1 only
+          /*
+          if(temp.charAt(i) == 'x'){ // for part 1 only
+            i += 2;
+            output += 2;
           }
+          */
         }
       }
+      output += 2; // for part 2
     }
     System.out.println(output);
   }
