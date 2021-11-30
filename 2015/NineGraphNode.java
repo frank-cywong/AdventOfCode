@@ -1,12 +1,15 @@
-import java.util.ArrayList;
+import java.util.*;
 public class NineGraphNode{
   public String name;
-  public ArrayList<StringIntPair> paths;
+  public HashMap<String,Integer> paths;
   public NineGraphNode(String name){
     this.name = name;
-    paths = new ArrayList<StringIntPair>();
+    paths = new HashMap<String,Integer>();
   }
   public void addPath(String destination, int distance){
-    paths.add(new StringIntPair(destination, distance));
+    paths.put(destination, distance);
+  }
+  public int getDistance(String dest){
+    return(paths.get(dest));
   }
 }
