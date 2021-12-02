@@ -31,12 +31,20 @@ public class Nine{
       return visitedAndLast[visited][last];
     }
     int tempminval = Integer.MAX_VALUE;
-    int lastvisitedset = visited & (~ 1 << last);
+    if(visited == (1 << last)){
+      return 0;
+    }
+    int lastvisitedset = visited & (~ (1 << last));
+    if(lastvisitedset == 0){
+      return Integer.MAX_VALUE;
+    }
     int temp;
     String nodenamestring;
     String curnodenamestring = nodenames[last];
+    //System.out.println("Computing visitedAndLast["+visited+"]["+last+"]");
+    //System.out.println(lastvisitedset);
     for(int i = 0; i < nodecount; i++){
-      if(((1 << last) & lastvisitedset) == 0){
+      if(((1 << i) & lastvisitedset) == 0){
         continue;
       }
       nodenamestring = nodenames[i];
@@ -47,6 +55,7 @@ public class Nine{
     }
     visitedAndLast[visited][last] = tempminval;
     setted[visited][last] = true;
+    //System.out.println("visitedAndLast["+visited+"]["+last+"] computed as "+tempminval);
     return tempminval;
   }
   public static int bestPathFromN(int startnodeindex){
@@ -56,11 +65,12 @@ public class Nine{
     setted[1 << startnodeindex][startnodeindex] = true;
     int tempmin = Integer.MAX_VALUE;
     int temp;
+    //System.out.println("Computing bestPathFromN for n = "+startnodeindex);
     for(int i = 0; i < nodecount; i++){
       if(i == startnodeindex){
         continue;
       }
-      temp = getVisitedAndLast(1 << nodecount - 1,i);
+      temp = getVisitedAndLast((1 << nodecount) - 1,i);
       if (temp < tempmin){
         tempmin = temp;
       }
@@ -98,6 +108,7 @@ public class Nine{
     //System.out.println(iteratenodes(nodes.keySet(),Integer.MAX_VALUE,0,null));
     nodenames = nodes.keySet().toArray(new String[0]);
     nodecount = nodenames.length;
+    //System.out.println(nodes.toString());
     int tempmin2 = Integer.MAX_VALUE;
     int curtestval;
     for(int i = 0; i < nodecount; i++){

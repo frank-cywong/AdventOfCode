@@ -12,4 +12,7 @@ public class NineGraphNode{
   public int getDistance(String dest){
     return(paths.get(dest));
   }
+  public String toString(){
+    return(name + ": " + paths.toString());
+  }
 }
