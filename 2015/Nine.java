@@ -45,6 +45,8 @@ public class Nine{
         tempminval = temp;
       }
     }
+    visitedAndLast[visited][last] = tempminval;
+    setted[visited][last] = true;
     return tempminval;
   }
   public static int bestPathFromN(int startnodeindex){
