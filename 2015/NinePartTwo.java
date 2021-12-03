@@ -1,6 +1,6 @@
 import java.io.*;
 import java.util.*;
-public class Nine{
+public class NinePartTwo{
   static Map<String,NineGraphNode> nodes = new HashMap<String,NineGraphNode>();
   /*
   public static int iteratenodes(Set<String> nodesleft, int curminpath, int pathuntilnow, String prevnode){
@@ -30,13 +30,13 @@ public class Nine{
     if(setted[visited][last]){
       return visitedAndLast[visited][last];
     }
-    int tempminval = Integer.MAX_VALUE;
+    int tempmaxval = Integer.MIN_VALUE;
     if(visited == (1 << last)){
       return 0;
     }
     int lastvisitedset = visited & (~ (1 << last));
     if(lastvisitedset == 0){
-      return Integer.MAX_VALUE;
+      return Integer.MIN_VALUE;
     }
     int temp;
     String nodenamestring;
@@ -49,21 +49,21 @@ public class Nine{
       }
       nodenamestring = nodenames[i];
       temp = getVisitedAndLast(lastvisitedset,i) + nodes.get(nodenamestring).getDistance(curnodenamestring);
-      if(temp < tempminval){
-        tempminval = temp;
+      if(temp > tempmaxval){
+        tempmaxval = temp;
       }
     }
-    visitedAndLast[visited][last] = tempminval;
+    visitedAndLast[visited][last] = tempmaxval;
     setted[visited][last] = true;
     //System.out.println("visitedAndLast["+visited+"]["+last+"] computed as "+tempminval);
-    return tempminval;
+    return tempmaxval;
   }
   public static int bestPathFromN(int startnodeindex){
     visitedAndLast = new int[1 << nodecount][nodecount];
     setted = new boolean[1 << nodecount][nodecount];
     visitedAndLast[1 << startnodeindex][startnodeindex] = 0;
     setted[1 << startnodeindex][startnodeindex] = true;
-    int tempmin = Integer.MAX_VALUE;
+    int tempmax = Integer.MIN_VALUE;
     int temp;
     //System.out.println("Computing bestPathFromN for n = "+startnodeindex);
     for(int i = 0; i < nodecount; i++){
@@ -71,11 +71,11 @@ public class Nine{
         continue;
       }
       temp = getVisitedAndLast((1 << nodecount) - 1,i);
-      if (temp < tempmin){
-        tempmin = temp;
+      if (temp > tempmax){
+        tempmax = temp;
       }
     }
-    return tempmin;
+    return tempmax;
   }
   public static void main(String[] args) throws FileNotFoundException{
     File f = new File(args[0]);
@@ -109,14 +109,14 @@ public class Nine{
     nodenames = nodes.keySet().toArray(new String[0]);
     nodecount = nodenames.length;
     //System.out.println(nodes.toString());
-    int tempmin2 = Integer.MAX_VALUE;
+    int tempmax2 = Integer.MIN_VALUE;
     int curtestval;
     for(int i = 0; i < nodecount; i++){
       curtestval = bestPathFromN(i);
-      if(curtestval < tempmin2){
-        tempmin2 = curtestval;
+      if(curtestval > tempmax2){
+        tempmax2 = curtestval;
       }
     }
-    System.out.println(tempmin2);
+    System.out.println(tempmax2);
   }
 }
