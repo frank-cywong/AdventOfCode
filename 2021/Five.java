@@ -3,6 +3,7 @@ import java.util.Scanner;
 public class Five{
   static byte[][] overlapUpToTwo = new byte[1000][1000];
   public static void condint(int x, int y){
+    //System.out.println(x+", "+y); for testing
     if(overlapUpToTwo[x][y] < 2){
       overlapUpToTwo[x][y]++;
     }
@@ -17,10 +18,22 @@ public class Five{
     temp2 = temp[1].split(",");
     x2 = Integer.parseInt(temp2[0]);
     y2 = Integer.parseInt(temp2[1]);
+    int t;
     if(x1 != x2 && y1 != y2){
+      //return; for part 1
+      if(x2 < x1){ // normalise in terms of increasing x
+        t = x2;
+        x2 = x1;
+        x1 = t;
+        t = y2;
+        y2 = y1;
+        y1 = t;
+      }
+      for(int x = x1; x <= x2; x++){
+        condint(x,(y2 > y1 ? y1 - x1 + x : y1 - x + x1));
+      }
       return;
     }
-    int t;
     if(x2 < x1){
       t = x2;
       x2 = x1;
