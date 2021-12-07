@@ -1,5 +1,4 @@
 import java.util.*;
-import java.io.*;
 public class Eleven{
   public static boolean isInvalidChar(char c){
     return(c == 'i' || c == 'o' || c == 'l');
@@ -11,20 +10,20 @@ public class Eleven{
     Set<String> twolist = new HashSet<String>();
     String twolast = null;
     String twocur = null;
-    boolean hasPair = false;
+    int hasPairCount = 0;
     boolean hasIncreasing = false;
     for(int i = 0; i < p.length(); i++){
       if(isInvalidChar(p.charAt(i))){
         return false;
       }
-      if((!hasPair) && i < p.length() - 1){
+      if((hasPairCount < 2) && i < p.length() - 1){
         if(twolast != null){
           twolist.add(twolast);
         }
         twolast = twocur;
         twocur = p.substring(i, i+2);
         if(twolist.contains(twocur)){
-          hasPair = true;
+          hasPairCount++;
         }
       }
       if((!hasIncreasing) && i < p.length() - 2){
@@ -33,25 +32,25 @@ public class Eleven{
         }
       }
     }
-    return hasPair && hasIncreasing;
+    return (hasPairCount >= 2) && hasIncreasing;
   }
-  public static void incStr(String s){
+  public static String incStr(String s){
     char curchar;
     for(int i = s.length() - 1; i >= 0; i--){
       curchar = s.charAt(i);
       if(curchar != 'z'){
         s = s.substring(0,i) + (char)(curchar + 1) + s.substring(i+1);
-        break;
+        return s;
       }
       s = s.substring(0,i) + "a" + s.substring(i+1);
     }
+    return s;
   }
-  public static void main(String[] args) throws FileNotFoundException{
-    File f = new File(args[0]);
-    Scanner in = new Scanner(f);
-    String temp = in.nextLine();
+  public static void main(String[] args){
+    String temp = args[0];
     while(!isValid(temp)){
-      incStr(temp);
+      temp = incStr(temp);
+      System.out.println(temp);
     }
     System.out.println(temp);
   }
