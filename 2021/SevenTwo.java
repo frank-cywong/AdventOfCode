@@ -12,9 +12,13 @@ public class SevenTwo{
     }
     int mean = (int)((double)sum / (double)temp.length);
     long count = 0;
+    long count2 = 0;
     for(int i = 0; i < temp.length; i++){
       count += lsum(Math.abs(data[i]-mean));
     }
-    System.out.println(count);
+    for(int i = 0; i < temp.length; i++){
+      count2 += lsum(Math.abs(data[i]-mean-1));
+    }
+    System.out.println(Math.min(count, count2));
   }
 }
