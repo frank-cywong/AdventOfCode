@@ -32,7 +32,30 @@ public class Ten{
   public static boolean isOpening(char c){
     return(c == '(' || c == '<' || c == '[' || c == '{');
   }
-  public static int checkCorrupt(String s){
+  public static int getSecondReturnValue(char c){
+    switch(c){
+      case '(':
+        return 1;
+      case '<':
+        return 4;
+      case '[':
+        return 2;
+      case '{':
+        return 3;
+    }
+    System.out.println("Invalid character passed to getClosing");
+    return 0;
+  }
+  public static long autoComplete(ArrayList<Character> chars){
+    long output = 0;
+    long exp = 1;
+    for(int i = 0; i < chars.size(); i++){
+      output += getSecondReturnValue(chars.get(i)) * exp;
+      exp *= 5;
+    }
+    return output;
+  }
+  public static long checkCorrupt(String s){
     ArrayList<Character> opening_brackets = new ArrayList<Character>();
     char temp, toCompare;
     for(int i = 0; i < s.length(); i++){
@@ -44,21 +67,28 @@ public class Ten{
           opening_brackets.remove(opening_brackets.size()-1);
         } else {
           // corrupted string
-          return getReturnValue(temp);
+          // return getReturnValue(temp); for part 1
+          return 0;
         }
       }
     }
-    return 0;
+    return autoComplete(opening_brackets);
   }
   public static void main(String[] args) throws FileNotFoundException{
     File f = new File(args[0]);
     Scanner in = new Scanner(f);
     String temp;
-    int count = 0;
+    long count = 0;
+    ArrayList<Long> counts = new ArrayList<Long>();
     while(in.hasNextLine()){
       temp = in.nextLine();
-      count += checkCorrupt(temp);
+      count = checkCorrupt(temp);
+      if(count != 0){
+        counts.add(count);
+      }
     }
-    System.out.println(count);
+    Collections.sort(counts);
+    //System.out.println(counts.size());
+    System.out.println(counts.get(counts.size()/2));
   }
 }
