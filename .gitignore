@@ -23,5 +23,7 @@
 hs_err_pid*
 
 # IO files
-*.in
-*.out
+# *.in
+# *.out
+# IO files are now included in the repository to make it easier to test code on multiple devices if needed.
+
