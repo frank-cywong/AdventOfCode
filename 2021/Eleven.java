@@ -22,7 +22,8 @@ public class Eleven{
       flash(x,y);
     }
   }
-  public static void step(){
+  public static boolean step(){
+    boolean allflash = true;
     for(int i = 0; i < 10; i++){
       for(int j = 0; j < 10; j++){
         data[i][j]++;
@@ -36,9 +37,12 @@ public class Eleven{
           data[i][j] = 0;
           flashcount++;
           flashed[i][j] = false;
+        } else {
+          allflash = false;
         }
       }
     }
+    return allflash;
   }
   public static void main(String[] args) throws FileNotFoundException{
     File f = new File(args[0]);
@@ -50,10 +54,11 @@ public class Eleven{
         data[j][i] = Integer.parseInt(""+temp.charAt(j)); //some slightly bad decisions here means that things are stored by x-major
       }
     }
-    int count = Integer.parseInt(args[1]);
-    for(int i = 0; i < count; i++){
-      step();
+    //int count = Integer.parseInt(args[1]);
+    int i = 1; // first step should be step 1
+    while(!step()){
+      i++;
     }
-    System.out.println(flashcount);
+    System.out.println(i);
   }
 }
