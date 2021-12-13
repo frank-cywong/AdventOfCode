@@ -15,7 +15,7 @@ public class Thirteen{
       boolean[][] newdata = new boolean[newymax][newxmax];
       for(int i = 0; i < newymax; i++){
         for(int j = 0; j < newxmax; j++){
-          newdata[i][j] = data[i][j] || data[2*coord-i][j];
+          newdata[i][j] = data[i][j] || (((2*coord-i) < ymax) ? data[2*coord-i][j] : false);
         }
       }
       data = newdata;
@@ -28,7 +28,7 @@ public class Thirteen{
       boolean[][] newdata = new boolean[newymax][newxmax];
       for(int i = 0; i < newymax; i++){
         for(int j = 0; j < newxmax; j++){
-          newdata[i][j] = data[i][j] || data[i][2*coord-j];
+          newdata[i][j] = data[i][j] || (((2*coord-j) < xmax) ? data[i][2*coord-j] : false);
         }
       }
       data = newdata;
@@ -63,11 +63,11 @@ public class Thirteen{
         splitted = temp.split(",");
         x = Integer.parseInt(splitted[0]);
         y = Integer.parseInt(splitted[1]);
-        if(y > ymax){
-          ymax = y;
+        if(y >= ymax){
+          ymax = y + 1;
         }
-        if(x > xmax){
-          xmax = x;
+        if(x >= xmax){
+          xmax = x + 1;
         }
         data[y][x] = true;
       }
@@ -76,10 +76,14 @@ public class Thirteen{
     for(i = 0; i < data.length; i++){
       for(int j = 0; j < data[i].length; j++){
         if(data[i][j]){
-          count++;
+          System.out.print("#");
+        } else {
+          System.out.print(".");
         }
       }
+      System.out.print("\n");
     }
+    //System.out.println(Arrays.deepToString(data));
     System.out.println(count);
   }
 }
