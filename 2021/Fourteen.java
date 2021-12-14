@@ -16,14 +16,14 @@ public class Fourteen{
     newpolymer += polymer.charAt(polymer.length() - 1);
     polymer = newpolymer;
   }
-  public static int countFreq(){
-    HashMap<Character, Integer> freq = new HashMap<Character, Integer>();
+  public static long countFreq(){
+    HashMap<Character, Long> freq = new HashMap<Character, Long>();
     char temp;
     for(int i = 0; i < polymer.length(); i++){
       temp = polymer.charAt(i);
-      freq.put(temp,freq.getOrDefault(temp,0)+1);
+      freq.put(temp,freq.getOrDefault(temp,0L)+1);
     }
-    Integer[] values = freq.values().toArray(new Integer[0]);
+    Long[] values = freq.values().toArray(new Long[0]);
     Arrays.sort(values);
     return(values[values.length-1] - values[0]);
   }
@@ -44,6 +44,7 @@ public class Fourteen{
     int count = Integer.parseInt(args[1]);
     for(int i = 0; i < count; i++){
       doStep();
+      System.out.println("Doing step: "+i);
     }
     System.out.println(countFreq());
   }
