@@ -14,6 +14,9 @@ public class SixteenAttemptTwo{
         v |= 1;
       }
     }
+    if(v > (1 << 16)){
+      System.out.println("potential overflow error " + v);
+    }
     return v;
   }
   public static String strHexToBin(String hex){
@@ -46,6 +49,9 @@ public class SixteenAttemptTwo{
       if(output.get(output.size()-1) < 0){
         System.out.println("warning potential less than 0 error");
       }
+    }
+    if(globalpacket.length() != (initialbitcount - bits)){
+      System.out.println("potential error bit counts do not match up");
     }
     return output;
   }
@@ -110,12 +116,19 @@ public class SixteenAttemptTwo{
       globalpacket = newpacket;
       values = parseByCount(opcount);
     }
+    if(oplen == 1 && opcount != values.size()){
+      System.out.println("likely error, opcount "+opcount+" but values "+values);
+    }
     //ArrayList<Integer> values = parse(newpacket, newmaxparse); // just parse everything else for now
     long output = 0; // set this to whatever the identity is for the operator function
     switch(type){
       case 0:
         for(int i = 0; i < values.size(); i++){
           output += values.get(i);
+          if(output > (1L << 32)){
+            System.out.println("warning potential overflow in 0:" + output);
+            //System.out.println("sum of "+values);
+          }
         }
         break;
       case 1:
@@ -123,7 +136,7 @@ public class SixteenAttemptTwo{
         for(int i = 0; i < values.size(); i++){
           output *= values.get(i);
           if(output > (1L << 32)){
-            System.out.println("warning potential overflow " + output);
+            System.out.println("warning potential overflow in 1:" + output);
           }
         }
         break;
@@ -131,12 +144,18 @@ public class SixteenAttemptTwo{
         output = Long.MAX_VALUE;
         for(int i = 0; i < values.size(); i++){
           output = Math.min(output, values.get(i));
+          if(output > (1L << 32)){
+            System.out.println("warning potential overflow in 2:" + output);
+          }
         }
         break;
       case 3:
         output = Long.MIN_VALUE;
         for(int i = 0; i < values.size(); i++){
           output = Math.max(output, values.get(i));
+          if(output > (1L << 32)){
+            System.out.println("warning potential overflow in 3:" + output);
+          }
         }
         break;
       case 5:
@@ -165,7 +184,7 @@ public class SixteenAttemptTwo{
     File f = new File(args[0]);
     Scanner in = new Scanner(f);
     String hex = in.nextLine();
-    //System.out.println(hex);
+    System.out.println(hex);
     String bin = strHexToBin(hex);
     //System.out.println(bin);
     globalpacket = bin;
