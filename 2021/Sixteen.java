@@ -20,7 +20,7 @@ public class Sixteen{
     char temp;
     for(int i = 0; i < hex.length(); i++){
       temp = hex.charAt(i);
-      temp = (temp >= 'A' ? temp - 'A' + 10 : temp - '0');
+      temp = (char)(temp >= 'A' ? temp - 'A' + 10 : temp - '0');
       output += Integer.toBinaryString((int)temp);
     }
     return output;
@@ -37,7 +37,6 @@ public class Sixteen{
     if(packet.length() == 0 || isAllZero(packet)){
       return;
     }
-    parsed++;
     int version = bitstringToVal(packet.substring(0,3));
     versionsum += version;
     int type = bitstringToVal(packet.substring(3,6));
@@ -51,7 +50,7 @@ public class Sixteen{
         val += bitstringToVal(packet.substring(rs+1,rs+5));
         rs += 5;
       }
-      parse(packet.substring(rs), parsed); // just parse everything else
+      parse(packet.substring(rs)); // just parse everything else
       return;
     }
     int oplen = charToVal(packet.charAt(6));
@@ -63,9 +62,9 @@ public class Sixteen{
   public static void main(String[] args) throws FileNotFoundException{
     File f = new File(args[0]);
     Scanner in = new Scanner(f);
-    String hex = Scanner.nextLine();
+    String hex = in.nextLine();
     String bin = strHexToBin(hex);
     parse(bin);
-    return versionsum;
+    System.out.println(versionsum);
   }
 }
