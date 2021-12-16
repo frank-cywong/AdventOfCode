@@ -9,7 +9,7 @@ public class Sixteen{
     int v = 0;
     for(int i = 0; i < s.length(); i++){
       v <<= 1;
-      if(charToVal(s.charAt(0)) == 1){
+      if(charToVal(s.charAt(i)) == 1){
         v |= 1;
       }
     }
@@ -18,10 +18,14 @@ public class Sixteen{
   public static String strHexToBin(String hex){
     String output = "";
     char temp;
+    String temps;
     for(int i = 0; i < hex.length(); i++){
       temp = hex.charAt(i);
-      temp = (char)(temp >= 'A' ? temp - 'A' + 10 : temp - '0');
-      output += Integer.toBinaryString((int)temp);
+      temps = Integer.toBinaryString((temp >= 'A' ? temp - 'A' + 10 : temp - '0'));
+      while(temps.length() < 4){
+        temps = "0" + temps;
+      }
+      output += temps;
     }
     return output;
   }
@@ -54,6 +58,7 @@ public class Sixteen{
       return;
     }
     int oplen = charToVal(packet.charAt(6));
+    System.out.println(packet);
     int opcount = (oplen == 1 ? bitstringToVal(packet.substring(7,18)) : bitstringToVal(packet.substring(7,22))); // either subpacket count or bit count
     String newpacket = (oplen == 1 ? packet.substring(18) : packet.substring(22));
     parse(newpacket); // just parse everything else for now
@@ -63,7 +68,9 @@ public class Sixteen{
     File f = new File(args[0]);
     Scanner in = new Scanner(f);
     String hex = in.nextLine();
+    System.out.println(hex);
     String bin = strHexToBin(hex);
+    System.out.println(bin);
     parse(bin);
     System.out.println(versionsum);
   }
