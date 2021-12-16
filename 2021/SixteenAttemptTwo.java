@@ -6,8 +6,8 @@ public class SixteenAttemptTwo{
   public static int charToVal(char c){
     return (c - '0');
   }
-  public static int bitstringToVal(String s){
-    int v = 0;
+  public static long bitstringToVal(String s){
+    long v = 0;
     for(int i = 0; i < s.length(); i++){
       v <<= 1;
       if(charToVal(s.charAt(i)) == 1){
@@ -43,6 +43,9 @@ public class SixteenAttemptTwo{
     ArrayList<Long> output = new ArrayList<Long>();
     while(globalpacket.length() > (initialbitcount - bits)){
       output.add(parseOneValue());
+      if(output.get(output.size()-1) < 0){
+        System.out.println("warning potential less than 0 error");
+      }
     }
     return output;
   }
@@ -50,6 +53,9 @@ public class SixteenAttemptTwo{
     ArrayList<Long> output = new ArrayList<Long>();
     for(int i = 0; i < count; i++){
       output.add(parseOneValue());
+      if(output.get(i) < 0){
+        System.out.println("warning potential less than 0 error");
+      }
     }
     return output;
   }
@@ -57,12 +63,13 @@ public class SixteenAttemptTwo{
     String packet = globalpacket;
     if(packet.length() == 0 || isAllZero(packet)){
       globalpacket = "";
+      System.out.println("potential error " + packet);
       return 0L;
     }
     int parsed = 0;
-    int version = bitstringToVal(packet.substring(0,3));
+    int version = (int)bitstringToVal(packet.substring(0,3));
     //versionsum += version;
-    int type = bitstringToVal(packet.substring(3,6));
+    int type = (int)bitstringToVal(packet.substring(3,6));
     if(type == 4) {
       int control = 1;
       int rs = 6;
@@ -72,13 +79,22 @@ public class SixteenAttemptTwo{
         val <<= 4;
         val += bitstringToVal(packet.substring(rs+1,rs+5));
         rs += 5;
+        if(rs > 50){
+          System.out.println("potential overflow "+val);
+        }
       }
+      /*
+      if(rs > 50){
+        System.out.println("potential overflow "+val);
+        System.out.println(packet.substring(0,rs));
+      }
+      */
       globalpacket = packet.substring(rs);
       return val;
     }
     int oplen = charToVal(packet.charAt(6));
     //System.out.println(packet);
-    int opcount = (oplen == 1 ? bitstringToVal(packet.substring(7,18)) : bitstringToVal(packet.substring(7,22))); // either subpacket count or bit count
+    int opcount = (int)(oplen == 1 ? bitstringToVal(packet.substring(7,18)) : bitstringToVal(packet.substring(7,22))); // either subpacket count or bit count
     String newpacket = (oplen == 1 ? packet.substring(18) : packet.substring(22));
     ArrayList<Long> values = null;
     if(oplen == 0){
@@ -106,6 +122,9 @@ public class SixteenAttemptTwo{
         output = 1;
         for(int i = 0; i < values.size(); i++){
           output *= values.get(i);
+          if(output > (1L << 32)){
+            System.out.println("warning potential overflow " + output);
+          }
         }
         break;
       case 2:
@@ -150,8 +169,9 @@ public class SixteenAttemptTwo{
     String bin = strHexToBin(hex);
     //System.out.println(bin);
     globalpacket = bin;
-    ArrayList<Long> result = parseFixedLength(bin.length());
-    System.out.println(result.get(0));
+    System.out.println(parseOneValue());
+    //ArrayList<Long> result = parseFixedLength(bin.length());
+    //System.out.println(result.get(0));
     //System.out.println(versionsum);
   }
 }
