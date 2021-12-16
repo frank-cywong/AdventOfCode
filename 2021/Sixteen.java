@@ -2,6 +2,7 @@ import java.io.*;
 import java.util.*;
 public class Sixteen{
   //static int versionsum = 0;
+  static String remainingparse = null;
   public static int charToVal(char c){
     return (c - '0');
   }
@@ -41,6 +42,10 @@ public class Sixteen{
     if(packet.length() == 0 || isAllZero(packet)){
       return null;
     }
+    if(maxparse == 0){
+      remainingparse = packet;
+      return null;
+    }
     int parsed = 0;
     int version = bitstringToVal(packet.substring(0,3));
     //versionsum += version;
@@ -57,7 +62,7 @@ public class Sixteen{
       }
       ArrayList<Integer> output = new ArrayList<Integer>();
       output.add(val);
-      ArrayList<Integer> tempv = parse(packet.substring(rs)); // just parse everything else
+      ArrayList<Integer> tempv = parse(packet.substring(rs), maxparse - 1); // just parse everything else
       if(tempv != null){
         output.addAll(tempv);
       }
