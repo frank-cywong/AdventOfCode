@@ -7,6 +7,7 @@ public class SixteenAttemptTwo{
     return (c - '0');
   }
   public static long bitstringToVal(String s){
+    /*
     long v = 0;
     for(int i = 0; i < s.length(); i++){
       v <<= 1;
@@ -17,7 +18,8 @@ public class SixteenAttemptTwo{
     if(v > (1 << 16)){
       System.out.println("potential overflow error " + v);
     }
-    return v;
+    */
+    return Integer.parseInt(s,2);
   }
   public static String strHexToBin(String hex){
     String output = "";
@@ -115,6 +117,9 @@ public class SixteenAttemptTwo{
     if(oplen == 1){
       globalpacket = newpacket;
       values = parseByCount(opcount);
+    }
+    if(oplen != 0 && oplen != 1){
+      System.out.println("likely error, invalid oplen "+oplen);
     }
     if(oplen == 1 && opcount != values.size()){
       System.out.println("likely error, opcount "+opcount+" but values "+values);
