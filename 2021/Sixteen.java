@@ -39,11 +39,15 @@ public class Sixteen{
     return true;
   }
   public static ArrayList<Integer> parse(String packet, int maxparse) throws Exception{ // returns packet value(s)
-    if(packet.length() == 0 || isAllZero(packet)){
-      return null;
-    }
     if(maxparse == 0){
       remainingparse = packet;
+      //System.out.println("remaining parse being set to "+packet);
+      return null;
+    }
+    if(packet == null){
+      System.out.println("packet is null somehow");
+    }
+    if(packet == null || packet.length() == 0 || isAllZero(packet)){
       return null;
     }
     int parsed = 0;
@@ -62,7 +66,7 @@ public class Sixteen{
       }
       ArrayList<Integer> output = new ArrayList<Integer>();
       output.add(val);
-      ArrayList<Integer> tempv = parse(packet.substring(rs), maxparse - 1); // just parse everything else
+      ArrayList<Integer> tempv = parse(packet.substring(rs), maxparse - 1); // parse some only
       if(tempv != null){
         output.addAll(tempv);
       }
@@ -75,26 +79,45 @@ public class Sixteen{
     String toparselater = "";
     int newmaxparse = -1;
     if(oplen == 0){
-      int parselimitbits = Integer.parseInt(opcount,2);
-      toparselater = newpacket.substring(parselimitbits);
-      newpacket = newpacket.substring(0,parselimitbits);
+      toparselater = newpacket.substring(opcount);
+      newpacket = newpacket.substring(0,opcount);
     }
     if(oplen == 1){
-      newmaxparse = Integer.parseInt(opcount,2);
+      newmaxparse = opcount;
     }
-    ArrayList<Integer> values = parse(newpacket, newmaxparse); // just parse everything else for now
+    //System.out.println("values getting " + newpacket);
+    //System.out.println("with parse " + newmaxparse);
+    ArrayList<Integer> values = parse(newpacket, newmaxparse); // parse only some
+    if(oplen == 1){
+      toparselater = remainingparse;
+    }
     int output = 0; // set this to whatever the identity is for the operator function
     switch(type){
       case 0:
+        System.out.println(values);
         for(int i = 0; i < values.size(); i++){
           output += values.get(i);
         }
+        /*
+        System.out.println(oplen);
+        System.out.println(opcount);
+        System.out.println(toparselater);
+        System.out.println(newpacket);
+        System.out.println(values.toString());
+        */
         break;
       case 1:
         output = 1;
         for(int i = 0; i < values.size(); i++){
           output *= values.get(i);
         }
+        /*
+        System.out.println("oplen "+oplen);
+        System.out.println("opcount "+opcount);
+        System.out.println("toparselater "+toparselater);
+        System.out.println("newpacket "+newpacket);
+        System.out.println(values.toString());
+        */
         break;
       case 2:
         output = Integer.MAX_VALUE;
@@ -122,6 +145,12 @@ public class Sixteen{
         break;
       case 7:
         if(values.size() != 2){
+          /*
+          System.out.println(oplen);
+          System.out.println(opcount);
+          System.out.println(toparselater);
+          System.out.println(newpacket);
+          */
           throw new Exception("Expected 2 input values for values, instead got: " + values.toString());
         }
         output = (values.get(0) == values.get(1) ? 1 : 0);
@@ -129,12 +158,22 @@ public class Sixteen{
     }
     ArrayList<Integer> arroutput = new ArrayList<Integer>();
     arroutput.add(output);
-    if(opcount == 0){
-      ArrayList<Integer> tempv = parse(toparselater);
+    /* this is wrong, oplen not opcount
+    if(opcount == 1){
+      if(remainingparse == null){
+        toparselater = "";
+      }
+      toparselater = remainingparse;
     }
+    */
+    if(toparselater == null){
+      toparselater = "";
+    }
+    ArrayList<Integer> tempv = parse(toparselater,-1);
     if(tempv != null){
       arroutput.addAll(tempv);
     }
+    System.out.println("returning " + arroutput.toString());
     return arroutput;
   }
   
@@ -145,7 +184,7 @@ public class Sixteen{
     //System.out.println(hex);
     String bin = strHexToBin(hex);
     //System.out.println(bin);
-    ArrayList<Integer> result = parse(bin);
+    ArrayList<Integer> result = parse(bin,-1);
     System.out.println(result.get(0));
     //System.out.println(versionsum);
   }
