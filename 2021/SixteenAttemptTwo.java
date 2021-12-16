@@ -193,7 +193,7 @@ public class SixteenAttemptTwo{
         in 5 and 6, nothing bad happens, as well, Long < Long isn't a thing
         But with Long == Long, it tries to compare its addresses
         However, this only happens for longer longs since shorter longs are interred https://stackoverflow.com/questions/19485818/why-are-2-long-variables-not-equal-with-operator-in-java
-        this bug took me like 1.5 hours of my time to debug
+        this bug took me like 2 hours of my time to debug
         */
         output = ((values.get(0).equals(values.get(1))) ? 1 : 0);
         break;
