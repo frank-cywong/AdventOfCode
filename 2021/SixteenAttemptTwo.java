@@ -98,6 +98,7 @@ public class SixteenAttemptTwo{
       }
       */
       globalpacket = packet.substring(rs);
+      System.out.println(packet.substring(0,rs) + " gave " + val);
       return val;
     }
     int oplen = charToVal(packet.charAt(6));
@@ -126,6 +127,10 @@ public class SixteenAttemptTwo{
     }
     //ArrayList<Integer> values = parse(newpacket, newmaxparse); // just parse everything else for now
     long output = 0; // set this to whatever the identity is for the operator function
+    //System.out.println(type);
+    if(values.get(0) == 131893){ //something seems wrong
+      System.out.println(packet.length());
+    }
     switch(type){
       case 0:
         for(int i = 0; i < values.size(); i++){
@@ -135,6 +140,7 @@ public class SixteenAttemptTwo{
             //System.out.println("sum of "+values);
           }
         }
+        //System.out.println(type + " should be 0");
         break;
       case 1:
         output = 1;
@@ -144,6 +150,7 @@ public class SixteenAttemptTwo{
             System.out.println("warning potential overflow in 1:" + output);
           }
         }
+        //System.out.println(type + " should be 1");
         break;
       case 2:
         output = Long.MAX_VALUE;
@@ -167,21 +174,31 @@ public class SixteenAttemptTwo{
         if(values.size() != 2){
           throw new Exception("Expected 2 input values for values, instead got: " + values.toString());
         }
-        output = (values.get(0) > values.get(1) ? 1 : 0);
+        output = ((values.get(0) > values.get(1)) ? 1 : 0);
         break;
       case 6:
         if(values.size() != 2){
           throw new Exception("Expected 2 input values for values, instead got: " + values.toString());
         }
-        output = (values.get(0) < values.get(1) ? 1 : 0);
+        output = ((values.get(0) < values.get(1)) ? 1 : 0);
         break;
       case 7:
         if(values.size() != 2){
           throw new Exception("Expected 2 input values for values, instead got: " + values.toString());
         }
-        output = (values.get(0) == values.get(1) ? 1 : 0);
+        System.out.println(" are these equal? " + values.get(0) + " == " + values.get(1)); // something seems off here as well
+        /*
+        So after a while of debugging, here's the issue:
+        values is an ArrayList with type Long, the object Long
+        in 5 and 6, nothing bad happens, as well, Long < Long isn't a thing
+        But with Long == Long, it tries to compare its addresses
+        However, this only happens for longer longs since shorter longs are interred https://stackoverflow.com/questions/19485818/why-are-2-long-variables-not-equal-with-operator-in-java
+        this bug took me like 1.5 hours of my time to debug
+        */
+        output = ((values.get(0).equals(values.get(1))) ? 1 : 0);
         break;
     }
+    System.out.println(values + ", type " + type + " = " + output);
     return output;
   }
 
