@@ -38,26 +38,26 @@ public class SixteenAttemptTwo{
     }
     return true;
   }
-  public static ArrayList<Integer> parseFixedLength(int bits) throws Exception{
+  public static ArrayList<Long> parseFixedLength(int bits) throws Exception{
     int initialbitcount = globalpacket.length();
-    ArrayList<Integer> output = new ArrayList<Integer>();
+    ArrayList<Long> output = new ArrayList<Long>();
     while(globalpacket.length() > (initialbitcount - bits)){
       output.add(parseOneValue());
     }
     return output;
   }
-  public static ArrayList<Integer> parseByCount(int count) throws Exception{
-    ArrayList<Integer> output = new ArrayList<Integer>();
+  public static ArrayList<Long> parseByCount(int count) throws Exception{
+    ArrayList<Long> output = new ArrayList<Long>();
     for(int i = 0; i < count; i++){
       output.add(parseOneValue());
     }
     return output;
   }
-  public static int parseOneValue() throws Exception{ // returns packet value(s)
+  public static long parseOneValue() throws Exception{ // returns packet value(s)
     String packet = globalpacket;
     if(packet.length() == 0 || isAllZero(packet)){
       globalpacket = "";
-      return 0;
+      return 0L;
     }
     int parsed = 0;
     int version = bitstringToVal(packet.substring(0,3));
@@ -66,7 +66,7 @@ public class SixteenAttemptTwo{
     if(type == 4) {
       int control = 1;
       int rs = 6;
-      int val = 0;
+      long val = 0;
       while(control != 0){
         control = charToVal(packet.charAt(rs));
         val <<= 4;
@@ -80,7 +80,7 @@ public class SixteenAttemptTwo{
     //System.out.println(packet);
     int opcount = (oplen == 1 ? bitstringToVal(packet.substring(7,18)) : bitstringToVal(packet.substring(7,22))); // either subpacket count or bit count
     String newpacket = (oplen == 1 ? packet.substring(18) : packet.substring(22));
-    ArrayList<Integer> values = null;
+    ArrayList<Long> values = null;
     if(oplen == 0){
       /*
       int parselimitbits = Integer.parseInt(opcount,2);
@@ -95,7 +95,7 @@ public class SixteenAttemptTwo{
       values = parseByCount(opcount);
     }
     //ArrayList<Integer> values = parse(newpacket, newmaxparse); // just parse everything else for now
-    int output = 0; // set this to whatever the identity is for the operator function
+    long output = 0; // set this to whatever the identity is for the operator function
     switch(type){
       case 0:
         for(int i = 0; i < values.size(); i++){
@@ -109,13 +109,13 @@ public class SixteenAttemptTwo{
         }
         break;
       case 2:
-        output = Integer.MAX_VALUE;
+        output = Long.MAX_VALUE;
         for(int i = 0; i < values.size(); i++){
           output = Math.min(output, values.get(i));
         }
         break;
       case 3:
-        output = Integer.MIN_VALUE;
+        output = Long.MIN_VALUE;
         for(int i = 0; i < values.size(); i++){
           output = Math.max(output, values.get(i));
         }
@@ -150,7 +150,7 @@ public class SixteenAttemptTwo{
     String bin = strHexToBin(hex);
     //System.out.println(bin);
     globalpacket = bin;
-    ArrayList<Integer> result = parseFixedLength(bin.length());
+    ArrayList<Long> result = parseFixedLength(bin.length());
     System.out.println(result.get(0));
     //System.out.println(versionsum);
   }
