@@ -36,3 +36,5 @@ test all xi > t to find working xi (or calculate?)
 calculate possible yi
 multiply possible xi * yi
 test cases where xf = 0
+
+f(x) = (2x/t + t - 1)/2
