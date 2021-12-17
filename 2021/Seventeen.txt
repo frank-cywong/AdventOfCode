@@ -1,0 +1,38 @@
+General rules:
+xf: final speed x
+yf: final speed y
+fy: final y
+fx: final x
+target area: x=153..199, y=-114..-75
+
+if xf = 0:
+xi = 17, t >= 17
+xi = 18, t >= 18
+xi = 19, t >= 19
+
+otherwise, (xi+xf)(xi-xf+1)/2 in [153, 199] or
+(xi+xf)(xi-xf+1) in [316,398]
+or with xf = xi - t + 1
+(2xi - t + 1)(t)/2 in [153, 199] (for xi > t)
+
+
+if y > 0:
+
+2y time later: (sth, 0)
+(y+1)+(y+2)+..... in [75,114], let this take q time
+qy + q(q+1)/2 in [75,114]
+
+total time: 2y + q
+
+to maximise height (for part 1) take y = 113
+
+if y <= 0 (or in general):
+yf = yi - t + 1
+(2yi - t + 1)(t)/2 in [-75, -114]
+
+general plan for finding solutions:
+test all t up to t = 19
+test all xi > t to find working xi (or calculate?)
+calculate possible yi
+multiply possible xi * yi
+test cases where xf = 0
