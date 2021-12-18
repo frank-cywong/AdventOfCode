@@ -47,8 +47,10 @@ public class Eighteen{
     File f = new File(args[0]);
     Scanner in = new Scanner(f);
     String line;
+    ArrayList<String> lines = new ArrayList<String>();
     while(in.hasNextLine()){
       line = in.nextLine();
+      /* part 1
       if(root == null){
         root = EighteenNode.parseString(line);
         continue;
@@ -56,8 +58,25 @@ public class Eighteen{
       root = EighteenNode.addAsRoot(root, EighteenNode.parseString(line));
       while(process(root)){}
       //System.out.println("Line addition result: " + root + "\n\n");
+      */
+      lines.add(line);
     }
-    System.out.println(root.getMagnitude());
-    System.out.println(root);
+    long curmaxmagnitude = Long.MIN_VALUE;
+    for(int i = 0; i < lines.size(); i++){
+      for(int j = 0; j < lines.size(); j++){
+        if(i == j){
+          continue;
+        }
+        root = EighteenNode.addAsRoot(EighteenNode.parseString(lines.get(i)), EighteenNode.parseString(lines.get(j)));
+        while(process(root)){}
+        if(root.getMagnitude() > curmaxmagnitude){
+          curmaxmagnitude = root.getMagnitude();
+          System.out.println("New largest magnitude: " + curmaxmagnitude + " set by " + lines.get(i) + " + " + lines.get(j));
+        }
+      }
+    }
+    System.out.println(curmaxmagnitude);
+    //System.out.println(root.getMagnitude());
+    //System.out.println(root);
   }
 }
