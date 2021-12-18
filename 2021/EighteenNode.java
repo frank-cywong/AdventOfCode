@@ -54,6 +54,9 @@ public class EighteenNode{
       rnum.value += r.value;
     }
     this.value = 0;
+    this.isnumber = true;
+    this.l = null;
+    this.r = null;
   }
   public long getMagnitude(){
     if(isnumber){
