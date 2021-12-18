@@ -3,7 +3,7 @@ import java.util.*;
 public class Eighteen{
   static EighteenNode root = null; // placeholder
   public static boolean process(EighteenNode node){
-    System.out.println("processing " + node);
+    //System.out.println("processing " + node);
     boolean toreturn = false;
     while(processExplode(node)){toreturn = true;}
     if(processSplit(node)){return true;}
@@ -25,7 +25,7 @@ public class Eighteen{
             break;
           }
         }
-        System.out.println("exploding " + curnode + " with lnode " + leftint + ", rightnode " + possiblerightnode);
+        //System.out.println("exploding " + curnode + " with lnode " + leftint + ", rightnode " + possiblerightnode);
         curnode.explode(leftint, possiblerightnode);
         return true; // processed, so loop again
       }
@@ -37,7 +37,7 @@ public class Eighteen{
     for(int i = 0; i < iter.size(); i++){
       EighteenNode curnode = iter.get(i);
       if(curnode.checkSplit()){
-        System.out.println(curnode + " has been split");
+        //System.out.println(curnode + " has been split");
         return true;
       }
     }
@@ -55,7 +55,7 @@ public class Eighteen{
       }
       root = EighteenNode.addAsRoot(root, EighteenNode.parseString(line));
       while(process(root)){}
-      System.out.println("Line addition result: " + root + "\n\n");
+      //System.out.println("Line addition result: " + root + "\n\n");
     }
     System.out.println(root.getMagnitude());
     System.out.println(root);
