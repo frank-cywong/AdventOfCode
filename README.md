@@ -1,1 +1,1 @@
-Repository for AdventOfCode assignments.
+Repository for [AdventOfCode](https://adventofcode.com/) personal code snippets for responses. Code snippets to assigned questions for homework/classwork are in [MKS21X-Labs](https://github.com/frank-cywong/MKS21X-Labs), in the 07-Advent directory.
