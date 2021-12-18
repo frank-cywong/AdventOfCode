@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 public class EighteenNode{
   public boolean isnumber;
   public int value;
@@ -15,10 +16,16 @@ public class EighteenNode{
     value = n;
     this.layer = layer;
   }
-  public EighteenNode[] returniter(){
-    EighteenNode[] output = new EighteenNode[2];
-    output[0] = l;
-    output[1] = r;
+  public ArrayList<EighteenNode> returniter(){
+    ArrayList<EighteenNode> output = new ArrayList<EighteenNode>();
+    output.add(this);
+    if(isnumber){
+      return output;
+    } else {
+      output.addAll(l.returniter()); // sort of depth-first search
+      output.addAll(r.returniter());
+    }
+    return output;
   }
   public boolean checkSplit(){
     if(!isnumber){
@@ -52,7 +59,7 @@ public class EighteenNode{
     if(isnumber){
       return value;
     }
-    return(3 * getMagnitude(l) + 2 * getMagnitude(r));
+    return(3 * l.getMagnitude() + 2 * r.getMagnitude());
   }
   public void updateLayer(){
     if(isnumber){
@@ -62,6 +69,12 @@ public class EighteenNode{
     r.layer = this.layer + 1;
     l.updateLayer();
     r.updateLayer();
+  }
+  public String toString(){
+    if(isnumber){
+      return ("" + value);
+    }
+    return("[" + l.toString() + "," + r.toString() + "]");
   }
   public static EighteenNode addAsRoot(EighteenNode a, EighteenNode b){
     a.layer = 1;
