@@ -2,11 +2,33 @@ import java.util.*;
 import java.io.*;
 public class Nineteen{
   static ArrayList<int[][]> data = new ArrayList<int[][]>();
+  static NineteenThreePair getvector(int x){
+    NineteenThreePair output = null;
+    int sig = (x > 0 ? 1 : -1);
+    switch(Math.abs(x)){
+      case 1:
+        output = new NineteenThreePair(sig,0,0);
+        break;
+      case 2:
+        output = new NineteenThreePair(0,sig,0);
+        break;
+      case 3:
+        output = new NineteenThreePair(0,0,sig);
+        break;
+    }
+    return output;
+  }
   static int getzorientation(int x, int y){
+    /* this does not actually work
     if((x > 0 && y > 0) || (x < 0 && y < 0)){ // right-hand rule
       return 1;
     }
     return -1;
+    */
+    NineteenThreePair vectora = getvector(x);
+    NineteenThreePair vectorb = getvector(y);
+    //System.out.println("cross product of "+x+", and y "+y+" gave dir "+vectora.crossProduct(vectorb).hashCode());
+    return(vectora.crossProduct(vectorb).hashCode() > 0 ? 1 : -1);
   }
   static int[] gettransformationfromnumber(int t){
     int basecase = t / 4; // 1,2 | 1,3 | 2,1 | 2,3 | 3,1 | 3,2
@@ -88,17 +110,22 @@ public class Nineteen{
     for(int t = 0; t < 24; t++){
       int[][] tb = returnTransformedCopy(b, t);
       //System.out.println("testing t = "+t);
+      /*
+      if(t == 6 && a.length == 65){
+        System.out.println(Arrays.deepToString(tb));
+      }
+      */
       HashMap<NineteenThreePair, Integer> diffpairs = new HashMap<NineteenThreePair, Integer>();
       for(int i = 0; i < a.length; i++){
         for(int j = 0; j < tb.length; j++){
           NineteenThreePair diffpair = gendiff(a[i], tb[j]);
           /*
-          if(t == 2 && j == 0){
+          if(t == 6 && j == 0 && a[i][0] == 456){
             System.out.println(Arrays.toString(a[i]));
             System.out.println(Arrays.toString(tb[j]));
             System.out.println(diffpair);
           }
-          NineteenThreePair testing = new NineteenThreePair(68,-1246,-43);
+          NineteenThreePair testing = new NineteenThreePair(1105,-1205,1229);
           if(testing.equals(diffpair)){
             System.out.println("Case works with t = " + t + ", i = " + i + ", j = " +j);
           }
@@ -201,11 +228,12 @@ public class Nineteen{
     testIfTransformed(0,1);
     testIfTransformed(0,3);
     testIfTransformed(0,2);
-    System.out.println(data.size());
-    System.out.println(data.get(0).length);
-    System.out.println(data.get(1).length);
+    //System.out.println(data.size());
+    //System.out.println(data.get(0).length);
+    //System.out.println(data.get(1).length);
     testIfTransformed(0,1);
-    System.out.println(Arrays.deepToString(data.get(0)));
+    //System.out.println(Arrays.deepToString(data.get(0)));
+    //System.out.println(Arrays.deepToString(data.get(1)));
     /*
     System.out.println(Arrays.deepToString(data.get(0)));
     System.out.println(Arrays.deepToString(data.get(1)));

@@ -23,4 +23,11 @@ public class NineteenThreePair{
   public String toString(){
     return("("+this.x+", "+this.y+", "+this.z+")");
   }
+  public NineteenThreePair crossProduct(NineteenThreePair other){
+    NineteenThreePair output = new NineteenThreePair(0,0,0);
+    output.x = (this.y * other.z - this.z * other.y);
+    output.y = (this.z * other.x - this.x * other.z);
+    output.z = (this.x * other.y - this.y * other.x);
+    return output;
+  }
 }
