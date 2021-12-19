@@ -1,6 +1,7 @@
 import java.util.*;
 import java.io.*;
 public class Nineteen{
+  static ArrayList<int[][]> data = new ArrayList<int[][]>();
   static int getzorientation(int x, int y){
     if((x > 0 && y > 0) || (x < 0 && y < 0)){ // right-hand rule
       return 1;
@@ -81,7 +82,9 @@ public class Nineteen{
   static NineteenThreePair gendiff(int[] a, int[] b){
     return new NineteenThreePair(a[0]-b[0],a[1]-b[1],a[2]-b[2]);
   }
-  static NineteenThreePair testIfTransformed(int[][] a, int[][] b){
+  static NineteenThreePair testIfTransformed(int ai, int bi){
+    int[][] a = data.get(ai);
+    int[][] b = data.get(bi);
     for(int t = 0; t < 24; t++){
       int[][] tb = returnTransformedCopy(b, t);
       //System.out.println("testing t = "+t);
@@ -107,6 +110,11 @@ public class Nineteen{
       NineteenThreePair gooddiff = null;
       while(it.hasNext()){
         NineteenThreePair temp = it.next();
+        /*
+        if(diffpairs.get(temp) > 1){
+          System.out.println(temp + " has appeared " + diffpairs.get(temp) + " times for ai = "+ai+", bi = "+bi);
+        }
+        */
         if(diffpairs.get(temp) >= 12){
           gooddiff = temp;
           break;
@@ -114,6 +122,8 @@ public class Nineteen{
       }
       if(gooddiff != null){
         System.out.println("Position of b rel to a is: " + gooddiff);
+        data.set(ai,combinedata(a,tb,gooddiff));
+        data.remove(bi);
         return gooddiff;
       }
     }
@@ -134,11 +144,37 @@ public class Nineteen{
     }
     return output;
   }
+  static List<Integer> arrtolist(int[] a){
+    List<Integer> output = new ArrayList<Integer>(a.length);
+    for(int i = 0; i < a.length; i++){
+      output.add(a[i]);
+    }
+    return output;
+  }
+  static int[][] combinedata(int[][] a, int[][] b, NineteenThreePair t){
+    Set<List<Integer>> norepeat = new HashSet<List<Integer>>();
+    ArrayList<int[]> tempoutput = new ArrayList<int[]>(a.length);
+    for(int i = 0; i < a.length; i++){
+      tempoutput.add(a[i]);
+      norepeat.add(arrtolist(a[i]));
+    }
+    for(int i = 0; i < b.length; i++){
+      int[] temp = b[i];
+      temp[0] += t.x;
+      temp[1] += t.y;
+      temp[2] += t.z;
+      List<Integer> templ = arrtolist(temp);
+      if(!norepeat.contains(templ)){
+        norepeat.add(templ);
+        tempoutput.add(temp);
+      }
+    }
+    return arrlisttoarr(tempoutput);
+  }
   public static void main(String[] args) throws FileNotFoundException{
     File f = new File(args[0]);
     Scanner in = new Scanner(f);
-    String temps;
-    ArrayList<int[][]> data = new ArrayList<int[][]>();
+    String temps = null;
     ArrayList<int[]> temp = null;
     while(in.hasNextLine()){
       temps = in.nextLine();
@@ -154,8 +190,22 @@ public class Nineteen{
       }
       temp.add(parseLine(temps));
     }
+    data.add(arrlisttoarr(temp));
     // temporary testing
-    testIfTransformed(data.get(0), data.get(1));
+    /*
+    testIfTransformed(0,2);
+    testIfTransformed(1,2);
+    testIfTransformed(3,2);
+    testIfTransformed(4,2);
+    */
+    testIfTransformed(0,1);
+    testIfTransformed(0,3);
+    testIfTransformed(0,2);
+    System.out.println(data.size());
+    System.out.println(data.get(0).length);
+    System.out.println(data.get(1).length);
+    testIfTransformed(0,1);
+    System.out.println(Arrays.deepToString(data.get(0)));
     /*
     System.out.println(Arrays.deepToString(data.get(0)));
     System.out.println(Arrays.deepToString(data.get(1)));
