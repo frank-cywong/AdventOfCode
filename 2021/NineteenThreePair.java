@@ -30,4 +30,7 @@ public class NineteenThreePair{
     output.z = (this.x * other.y - this.y * other.x);
     return output;
   }
+  public int getmanndist(NineteenThreePair other){
+    return((Math.abs(this.x - other.x)) + (Math.abs(this.y - other.y)) + (Math.abs(this.z - other.z)));
+  }
 }

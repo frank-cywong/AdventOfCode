@@ -25,6 +25,7 @@ public class Nineteen{
     }
     return -1;
     */
+    // use cross product for right-hand rule instead
     NineteenThreePair vectora = getvector(x);
     NineteenThreePair vectorb = getvector(y);
     //System.out.println("cross product of "+x+", and y "+y+" gave dir "+vectora.crossProduct(vectorb).hashCode());
@@ -225,6 +226,8 @@ public class Nineteen{
     testIfTransformed(3,2);
     testIfTransformed(4,2);
     */
+    ArrayList<NineteenThreePair> scanners = new ArrayList<NineteenThreePair>();
+    scanners.add(new NineteenThreePair(0,0,0));
     while(data.size() != 1){
       boolean immediatebreak = false;
       for(int i = 0; i < data.size(); i++){
@@ -235,6 +238,7 @@ public class Nineteen{
           NineteenThreePair returnval = testIfTransformed(i,j);
           if(returnval != null){
             immediatebreak = true;
+            scanners.add(returnval);
             break;
           }
         }
@@ -242,6 +246,19 @@ public class Nineteen{
       }
     }
     System.out.println(data.get(0).length);
+    int curmax = 0;
+    for(int i = 0; i < scanners.size(); i++){
+      for(int j = 0; j < scanners.size(); j++){
+        if(i == j){
+          continue;
+        }
+        int md = scanners.get(i).getmanndist(scanners.get(j));
+        if(md > curmax){
+          curmax = md;
+        }
+      }
+    }
+    System.out.println(curmax);
     /*
     testIfTransformed(0,1);
     testIfTransformed(0,3);
