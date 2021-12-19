@@ -225,6 +225,24 @@ public class Nineteen{
     testIfTransformed(3,2);
     testIfTransformed(4,2);
     */
+    while(data.size() != 1){
+      boolean immediatebreak = false;
+      for(int i = 0; i < data.size(); i++){
+        for(int j = 0; j < data.size(); j++){
+          if(i == j){
+            continue;
+          }
+          NineteenThreePair returnval = testIfTransformed(i,j);
+          if(returnval != null){
+            immediatebreak = true;
+            break;
+          }
+        }
+        if(immediatebreak){break;}
+      }
+    }
+    System.out.println(data.get(0).length);
+    /*
     testIfTransformed(0,1);
     testIfTransformed(0,3);
     testIfTransformed(0,2);
@@ -232,6 +250,7 @@ public class Nineteen{
     //System.out.println(data.get(0).length);
     //System.out.println(data.get(1).length);
     testIfTransformed(0,1);
+    */
     //System.out.println(Arrays.deepToString(data.get(0)));
     //System.out.println(Arrays.deepToString(data.get(1)));
     /*
