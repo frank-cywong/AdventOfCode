@@ -159,12 +159,15 @@ public class TwentyFour{
     return false;
   }
   public static long testCases(String[] instr){
-    long curtest = 99999999999999L;
+    //long curtest = 99939397989999L;
+    long curtest = 88838286878119L;
+    //long curtest = 9999L;
     while(true){
       if(!hasZero(curtest)){
         //System.out.println("Testing " + curtest);
         inpstream = Long.toString(curtest);
         boolean success = execAll(instr);
+        /*
         if(!success){ // instructions crashed
           // eg. if failpos = 1, set curtest entirely to 899999...
           long factor = (long)(Math.pow(10L,(14-failpos+1)));
@@ -175,8 +178,13 @@ public class TwentyFour{
           curtest = part1 * factor + part2;
           continue;
         }
+        */
         if(success){
-          //System.out.println(Arrays.toString(registers));
+          System.out.println(Arrays.toString(registers));
+          if(registers[3] < 500){
+            System.out.println(registers[3]);
+            System.out.println(curtest);
+          }
           if(registers[3] == 0){
             return curtest;
           }
@@ -194,9 +202,11 @@ public class TwentyFour{
       temp = in.nextLine();
       instr.add(temp);
     }
-    //inpstream = "7";
-    //execAll(instr.toArray(new String[0]));
-    //System.out.println(Arrays.toString(registers));
+    /*
+    inpstream = "6";
+    execAll(instr.toArray(new String[0]));
+    System.out.println(Arrays.toString(registers));
+    */
     System.out.println(testCases(instr.toArray(new String[0])));
   }
 }

@@ -1,0 +1,73 @@
+inp w
+mul x 0
+add x z
+mod x 26
+div z 1 or 26
+add x 13
+eql x w
+eql x 0
+mul y 0
+add y 25
+mul y x
+add y 1
+mul z y
+mul y 0
+add y w
+add y 15
+mul y x
+add z y
+
+w = 0
+x = 0
+y = y'
+z = z' or z' / 26
+
+x = z'
+x = z' % 26
+z = z'
+x = z' % 26 + k
+x = ((z' % 26 + k) == w ? 1 : 0)
+x = ((z' % 26 + k != w) ? 1 : 0)
+y = 0
+y = 25
+y = 25 or 0 (See 30)
+y = 26 or 1
+z = 26 or 1 * z'
+y = 0
+y = w
+y = w + j
+y = (w + j) * (1 or 0)
+z = 26 or 1 * z' + (w + j) * (1 or 0)
+if z' == 0 and y == 0: z = 0
+y = 0 if (z' % 26 + k == w)
+
+j > 0 always
+w in [1,9]
+z' >= 0
+if z' % 26 == 0, then z = (w + j) + 26 * z' provided (z' % 26 + k != w), otherwise z = z'
+So 
+next z % 26 = z' or w + j
+
+for final z = 0, we need z' = 0 or (w + j) + 26 * z' = 0, ie (w+j) <= 0
+all w > 0 and all j > 0
+
+so we need to keep z' low
+last step: k = -11
+so z' % 26 == 11 + w
+z == 11 + w
+
+we have 7 z / 26 here
+
+next z % 26 = z' (if z' % 26 + k == w) or w+j (if that is not true)
+so as k = 13 at first:
+z % 26 = w + 15
+
+lines we care about: 5, 6, 16
+
+z1 = w + j = 9 + 4 = 13
+13 % 26 + 15, no way match
+z2 = 26 * 13 + w + j, ie 4 or 3 + 14 = 18 or 17
+z2 % 26 = 18 or 17
+if 17, can meet -8 by setting w = 9
+ie. all negatives MUST BE MET
+
