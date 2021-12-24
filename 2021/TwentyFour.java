@@ -3,6 +3,7 @@ import java.io.*;
 public class TwentyFour{
   public static int[] registers = new int[4];
   public static String inpstream = "";
+  public static int failpos = 0;
   public static int getRegister(char c){
     return registers[c-'w'];
   }
@@ -131,6 +132,8 @@ public class TwentyFour{
           break;
       }
     } catch(ArithmeticException e){
+      // compute fail position by input, eg if 1 character inputted will return 1
+      failpos = 14 - inpstream.length();
       return false;
     }
     return true;
@@ -159,11 +162,21 @@ public class TwentyFour{
     long curtest = 99999999999999L;
     while(true){
       if(!hasZero(curtest)){
-        System.out.println("Testing " + curtest);
+        //System.out.println("Testing " + curtest);
         inpstream = Long.toString(curtest);
         boolean success = execAll(instr);
+        if(!success){ // instructions crashed
+          // eg. if failpos = 1, set curtest entirely to 899999...
+          long factor = (long)(Math.pow(10L,(14-failpos+1)));
+          long part1 = curtest / factor; // things before this part are kept
+          part1--;
+          long part2 = 99999999999999L % factor;
+          System.out.println("Jumping from " + curtest + " to " + (part1 * factor + part2) + " due to failpos " + failpos);
+          curtest = part1 * factor + part2;
+          continue;
+        }
         if(success){
-          System.out.println(Arrays.toString(registers));
+          //System.out.println(Arrays.toString(registers));
           if(registers[3] == 0){
             return curtest;
           }
