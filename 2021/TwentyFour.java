@@ -66,8 +66,11 @@ public class TwentyFour{
     char a2 = 0;
     int v = 0;
     a1 = temp[1].charAt(0);
+    //System.out.println(Arrays.toString(temp));
     try{
-      v = Integer.parseInt(temp[2]);
+      if(temp.length > 2){
+        v = Integer.parseInt(temp[2]);
+      }
     } catch (NumberFormatException e){
       a2 = temp[2].charAt(0);
       addressingmode = 1;
@@ -156,9 +159,11 @@ public class TwentyFour{
     long curtest = 99999999999999L;
     while(true){
       if(!hasZero(curtest)){
+        System.out.println("Testing " + curtest);
         inpstream = Long.toString(curtest);
         boolean success = execAll(instr);
         if(success){
+          System.out.println(Arrays.toString(registers));
           if(registers[3] == 0){
             return curtest;
           }
@@ -176,6 +181,9 @@ public class TwentyFour{
       temp = in.nextLine();
       instr.add(temp);
     }
+    //inpstream = "7";
+    //execAll(instr.toArray(new String[0]));
+    //System.out.println(Arrays.toString(registers));
     System.out.println(testCases(instr.toArray(new String[0])));
   }
 }
