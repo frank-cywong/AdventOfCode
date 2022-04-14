@@ -1,6 +1,7 @@
 import java.util.*;
 import java.io.*;
 public class Twenty{
+  static int infiniteValue = 0;
   public static void debugPrint(boolean[][] image){
     for(int i = 0; i < image.length; i++){
       for(int j = 0; j < image[0].length; j++){
@@ -8,6 +9,7 @@ public class Twenty{
       }
       System.out.print("\n");
     }
+    System.out.print("\n");
   }
   public static int computeEnhancementIndex(boolean[][] image, int starti, int startj){
     int output = 0;
@@ -18,9 +20,12 @@ public class Twenty{
           if(image[i][j]){
             output |= 1;
           }
+        } else {
+          output |= infiniteValue;
         }
       }
     }
+    //System.out.println("At ("+starti+", "+startj+"), index: " + output);
     return output;
   }
   public static boolean[][] enhance(boolean[][] image, boolean[] algorithm){
@@ -30,6 +35,8 @@ public class Twenty{
         output[i+1][j+1] = algorithm[computeEnhancementIndex(image, i, j)];
       }
     }
+    infiniteValue = (algorithm[infiniteValue * 0x1FF] ? 1 : 0);
+    System.out.println("New value at infinity: " + infiniteValue);
     return output;
   }
   public static void main(String[] args) throws FileNotFoundException{
@@ -40,6 +47,12 @@ public class Twenty{
     for(int i = 0; i < rawalgorithm.length(); i++){
       algorithm[i] = (rawalgorithm.charAt(i) == '#');
     }
+    /*
+    System.out.println(rawalgorithm.length());
+    boolean[][] temp = new boolean[1][];
+    temp[0] = algorithm;
+    debugPrint(temp);
+    */
     ArrayList<String> lines = new ArrayList<String>();
     while(in.hasNextLine()){
       String curline = in.nextLine();
@@ -56,10 +69,10 @@ public class Twenty{
       }
     }
     int enhanceCount = Integer.parseInt(args[1]);
-    debugPrint(image);
+    //debugPrint(image);
     for(int i = 0; i < enhanceCount; i++){
       image=enhance(image, algorithm);
-      debugPrint(image);
+      //debugPrint(image);
     }
     int output = 0;
     for(int i = 0; i < image.length; i++){
@@ -69,6 +82,8 @@ public class Twenty{
         }
       }
     }
+    //System.out.println(image.length);
+    //System.out.println(image[0].length);
     System.out.println(output);
   }
 }
