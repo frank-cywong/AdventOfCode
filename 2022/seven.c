@@ -35,6 +35,21 @@ long long dfs(struct dir * cur){
 	return sum;
 }
 
+long long dfs2(struct dir * cur, long long mindel){
+	long long sum = 10000000000;
+	for(int i = 0; i < cur->child_count; ++i){
+		long long cmps = dfs2(cur->children[i], mindel);
+		if(cmps < sum){
+			sum = cmps;
+		}
+	}
+	if(cur->size >= mindel && cur->size < sum){
+		sum = cur->size;
+	}
+	//printf("SIZE %lld for DIR %s\n", cur->size, cur->name);
+	return sum;
+}
+
 int main(){
 	FILE *fs = fopen("seven.in", "r");
 	char buff[256];
@@ -50,7 +65,7 @@ int main(){
 					if(buff[5] == '/'){
 						// do nothing
 					} else if (buff[5] == '.' && buff[6] == '.'){
-						printf("CD ..\n");
+						//printf("CD ..\n");
 						if(!(cur_dir->parent)){
 							printf("BAD: TRIED TO DO .. ON A DIRECTORY WITH NO PARENT\n");
 							exit(0);
@@ -128,7 +143,12 @@ int main(){
 		}
 		cur_dir = cur_dir->parent;
 	}
-	long long dfs_sum = dfs(cur_dir);
+	long long root_size = cur_dir->size;
+	printf("ROOT SIZE: %lld\n", root_size);
+	long long unused_space = 70000000 - root_size;
+	long long more_space_needed = 30000000 - unused_space;
+	printf("NEEDS %lld more bytes\n", more_space_needed);
+	long long dfs_sum = dfs2(cur_dir, more_space_needed);
 	printf("SUM: %lld\n", dfs_sum);
 	return 0;
 }
