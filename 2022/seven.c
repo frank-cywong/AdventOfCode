@@ -6,7 +6,7 @@ struct dir{
 	char * name;
 	struct dir ** children;
 	struct dir * parent;
-	int size;
+	long long size;
 	int child_count;
 	char trav;
 };
@@ -23,12 +23,24 @@ struct dir * new_dir(char * name){
 	return o;
 }
 
+long long dfs(struct dir * cur){
+	long long sum = 0;
+	for(int i = 0; i < cur->child_count; ++i){
+		sum += dfs(cur->children[i]);
+	}
+	if(cur->size <= 100000){
+		sum += cur->size;
+	}
+	printf("SIZE %lld for DIR %s\n", cur->size, cur->name);
+	return sum;
+}
+
 int main(){
-	FILE *fs = fopen("seven-test.in", "r");
+	FILE *fs = fopen("seven.in", "r");
 	char buff[256];
 	struct dir * cur_dir;
 	cur_dir = new_dir("/");
-	while(fgets(buff, 16384, fs)){
+	while(fgets(buff, 256, fs)){
 		if(buff[0] != '\n'){
 			if(buff[strlen(buff) - 1] == '\n'){
 				buff[strlen(buff) - 1] = '\0';
@@ -38,6 +50,7 @@ int main(){
 					if(buff[5] == '/'){
 						// do nothing
 					} else if (buff[5] == '.' && buff[6] == '.'){
+						printf("CD ..\n");
 						if(!(cur_dir->parent)){
 							printf("BAD: TRIED TO DO .. ON A DIRECTORY WITH NO PARENT\n");
 							exit(0);
@@ -46,6 +59,8 @@ int main(){
 							cur_dir->trav = 1;
 							cur_dir->parent->size += cur_dir->size;
 						}
+						//printf("size of parent: %d\n", cur_dir->parent->size);
+						//printf("parent name: %s\n", cur_dir->parent->name);
 						cur_dir = cur_dir->parent;
 					} else {
 						char * dname = buff + 5;
@@ -65,6 +80,10 @@ int main(){
 							found_dir->parent = cur_dir;
 							cur_dir->children[cur_dir->child_count] = found_dir;
 							cur_dir->child_count++;
+						}
+						cur_dir = found_dir;
+						if(cur_dir->trav){
+							printf("WARNING: CD-ed into a traversed dir\n");
 						}
 					}
 				} else if (buff[2] == 'l' && buff[3] == 's'){
@@ -87,7 +106,7 @@ int main(){
 					}
 					if(!child_found){
 						found_dir = new_dir(dname);
-						printf("ADDING DIR %s\n", dname);
+						//printf("ADDING DIR %s\n", dname);
 						found_dir->parent = cur_dir;
 						cur_dir->children[cur_dir->child_count] = found_dir;
 						cur_dir->child_count++;
@@ -96,11 +115,20 @@ int main(){
 					// file
 					int s;
 					sscanf(buff, "%d", &s);
-					printf("Adding file size %d to %s\n", s, cur_dir->name);
+					//printf("Adding file size %d to %s\n", s, cur_dir->name);
 					cur_dir->size += s;
 				}
 			}
 		}
 	}
+	while(strcmp(cur_dir->name, "/") != 0){
+		if(!cur_dir->trav){
+			cur_dir->trav = 1;
+			cur_dir->parent->size += cur_dir->size;
+		}
+		cur_dir = cur_dir->parent;
+	}
+	long long dfs_sum = dfs(cur_dir);
+	printf("SUM: %lld\n", dfs_sum);
 	return 0;
 }
