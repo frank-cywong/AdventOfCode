@@ -6,6 +6,7 @@ struct dir{
 	struct dir ** children;
 	struct dir * parent;
 	int size;
+	int child_count = 0;
 	char trav;
 };
 
@@ -16,6 +17,7 @@ struct dir * new_dir(char * name){
 	dir->size = 0;
 	dir->children = calloc(1000, sizeof(struct dir *));
 	dir->parent = 0;
+	dir->child_count = 0;
 	dir->trav = 0;
 	return o;
 }
@@ -28,10 +30,10 @@ int main(){
 	while(fgets(buff, 16384, fs)){
 		if(buff[0] != '\n'){
 			if(buff[0] == '$'){
-				if(buff[1] == 'c' && buff[2] == 'd'){
-					if(buff[4] == '/'){
+				if(buff[2] == 'c' && buff[3] == 'd'){
+					if(buff[5] == '/'){
 						// do nothing
-					} else if (buff[4] == '.' && buff[5] == '.'){
+					} else if (buff[5] == '.' && buff[6] == '.'){
 						if(!(cur_dir->parent)){
 							printf("BAD: TRIED TO DO .. ON A DIRECTORY WITH NO PARENT\n");
 							exit(0);
@@ -42,10 +44,18 @@ int main(){
 						}
 						cur_dir = cur_dir->parent;
 					} else {
+						char * dname = buff + 5;
+						// yes this is slow but how bad can it be
+						char child_found = 0;
+						for(int i = 0; i < cur_dir->child_count; ++i){
+							if(strcmp(cur_dir->
+						}
 					}
-				} else if (buff[1] == 'l' && buff[2] == 's'){
+				} else if (buff[2] == 'l' && buff[3] == 's'){
 					// don't actually need to do anything
 				}
+			} else {
+				// assume its ls input
 			}
 		}
 	}
