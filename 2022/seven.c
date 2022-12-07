@@ -1,24 +1,25 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 struct dir{
 	char * name;
 	struct dir ** children;
 	struct dir * parent;
 	int size;
-	int child_count = 0;
+	int child_count;
 	char trav;
 };
 
 struct dir * new_dir(char * name){
 	struct dir * o = malloc(sizeof(struct dir));
-	dir->name = calloc(strlen(name) + 1, sizeof(char));
-	strncpy(dir->name, name, strlen(name) + 1);
-	dir->size = 0;
-	dir->children = calloc(1000, sizeof(struct dir *));
-	dir->parent = 0;
-	dir->child_count = 0;
-	dir->trav = 0;
+	o->name = calloc(strlen(name) + 1, sizeof(char));
+	strncpy(o->name, name, strlen(name) + 1);
+	o->size = 0;
+	o->children = calloc(1000, sizeof(struct dir *));
+	o->parent = 0;
+	o->child_count = 0;
+	o->trav = 0;
 	return o;
 }
 
@@ -29,6 +30,9 @@ int main(){
 	cur_dir = new_dir("/");
 	while(fgets(buff, 16384, fs)){
 		if(buff[0] != '\n'){
+			if(buff[strlen(buff) - 1] == '\n'){
+				buff[strlen(buff) - 1] = '\0';
+			}
 			if(buff[0] == '$'){
 				if(buff[2] == 'c' && buff[3] == 'd'){
 					if(buff[5] == '/'){
@@ -38,8 +42,8 @@ int main(){
 							printf("BAD: TRIED TO DO .. ON A DIRECTORY WITH NO PARENT\n");
 							exit(0);
 						}
-						if(!dir->trav){
-							dir->trav = 1;
+						if(!cur_dir->trav){
+							cur_dir->trav = 1;
 							cur_dir->parent->size += cur_dir->size;
 						}
 						cur_dir = cur_dir->parent;
@@ -47,7 +51,7 @@ int main(){
 						char * dname = buff + 5;
 						// yes this is slow but how bad can it be
 						char child_found = 0;
-						struct * found_dir = 0;
+						struct dir * found_dir = 0;
 						for(int i = 0; i < cur_dir->child_count; ++i){
 							if(strcmp(cur_dir->children[i]->name, dname) == 0){
 								found_dir = cur_dir->children[i];
@@ -59,7 +63,7 @@ int main(){
 							found_dir = new_dir(dname);
 							printf("ADDING DIR %s\n", dname);
 							found_dir->parent = cur_dir;
-							cur_dir->children[child_count] = found_dir;
+							cur_dir->children[cur_dir->child_count] = found_dir;
 							cur_dir->child_count++;
 						}
 					}
@@ -73,7 +77,7 @@ int main(){
 					char *dname = buff + 4;
 					// yes this is slow but how bad can it be
 					char child_found = 0;
-					struct * found_dir = 0;
+					struct dir * found_dir = 0;
 					for(int i = 0; i < cur_dir->child_count; ++i){
 						if(strcmp(cur_dir->children[i]->name, dname) == 0){
 							found_dir = cur_dir->children[i];
@@ -85,7 +89,7 @@ int main(){
 						found_dir = new_dir(dname);
 						printf("ADDING DIR %s\n", dname);
 						found_dir->parent = cur_dir;
-						cur_dir->children[child_count] = found_dir;
+						cur_dir->children[cur_dir->child_count] = found_dir;
 						cur_dir->child_count++;
 					}
 				} else {
