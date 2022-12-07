@@ -47,8 +47,20 @@ int main(){
 						char * dname = buff + 5;
 						// yes this is slow but how bad can it be
 						char child_found = 0;
+						struct * found_dir = 0;
 						for(int i = 0; i < cur_dir->child_count; ++i){
-							if(strcmp(cur_dir->
+							if(strcmp(cur_dir->children[i]->name, dname) == 0){
+								found_dir = cur_dir->children[i];
+								child_found = 1;
+								break;
+							}
+						}
+						if(!child_found){
+							found_dir = new_dir(dname);
+							printf("ADDING DIR %s\n", dname);
+							found_dir->parent = cur_dir;
+							cur_dir->children[child_count] = found_dir;
+							cur_dir->child_count++;
 						}
 					}
 				} else if (buff[2] == 'l' && buff[3] == 's'){
@@ -56,6 +68,33 @@ int main(){
 				}
 			} else {
 				// assume its ls input
+				if(strlen(buff) >= 3 && buff[0] == 'd' && buff[1] == 'i' && buff[2] == 'r'){
+					// dir
+					char *dname = buff + 4;
+					// yes this is slow but how bad can it be
+					char child_found = 0;
+					struct * found_dir = 0;
+					for(int i = 0; i < cur_dir->child_count; ++i){
+						if(strcmp(cur_dir->children[i]->name, dname) == 0){
+							found_dir = cur_dir->children[i];
+							child_found = 1;
+							break;
+						}
+					}
+					if(!child_found){
+						found_dir = new_dir(dname);
+						printf("ADDING DIR %s\n", dname);
+						found_dir->parent = cur_dir;
+						cur_dir->children[child_count] = found_dir;
+						cur_dir->child_count++;
+					}
+				} else {
+					// file
+					int s;
+					sscanf(buff, "%d", &s);
+					printf("Adding file size %d to %s\n", s, cur_dir->name);
+					cur_dir->size += s;
+				}
 			}
 		}
 	}
