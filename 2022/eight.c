@@ -2,11 +2,17 @@
 #include <stdlib.h>
 #include <string.h>
 
+void uInc(int * x){
+	for(int i = 0; i < 10; ++i){
+		++(*(x + i));
+	}
+}
+
 int main(){
 	FILE *fs = fopen("eight.in", "r");
 	char buff[256];
 	signed char board[100][100];
-	signed char vis[100][100];
+	//signed char vis[100][100];
 	int r = 0;
 	int c = 0;
 	int rCount = -1;
@@ -26,47 +32,53 @@ int main(){
 		}
 	}
 	rCount = r;
+	/*
 	for(int i = 0; i < rCount; ++i){
 		for(int j = 0; j < cCount; ++j){
 			vis[i][j] = 0;
 		}
 	}
-	signed char cMax = -1;
+	*/
+	int scoreBoard[100][100];
+	int viewCount[10];
 	for(int i = 0; i < rCount; ++i){
-		cMax = -1;
+		memset(viewCount, 0, sizeof(int) * 10);
 		for(int j = 0; j < cCount; ++j){
-			if(cMax < board[i][j]){
-				vis[i][j] = 1;
-				cMax = board[i][j];
-				//printf("SET CMAX TO %d\n", board[i][j]);
+			scoreBoard[i][j] = viewCount[board[i][j]];
+			for(int k = board[i][j]; k >= 0; --k){
+				viewCount[k] = 0;
 			}
+			uInc(viewCount);
 		}
 	}
 	for(int i = 0; i < rCount; ++i){
-		cMax = -1;
+		memset(viewCount, 0, sizeof(int) * 10);
 		for(int j = cCount - 1; j >= 0; --j){
-			if(cMax < board[i][j]){
-				vis[i][j] = 1;
-				cMax = board[i][j];
+			scoreBoard[i][j] *= viewCount[board[i][j]];
+			for(int k = board[i][j]; k >= 0; --k){
+				viewCount[k] = 0;
 			}
+			uInc(viewCount);
 		}
 	}
-	for(int i = 0; i < cCount; ++i){
-		cMax = -1;
-		for(int j = 0; j < rCount; ++j){
-			if(cMax < board[j][i]){
-				vis[j][i] = 1;
-				cMax = board[j][i];
+	for(int j = 0; j < cCount; ++j){
+		memset(viewCount, 0, sizeof(int) * 10);
+		for(int i = 0; i < rCount; ++i){
+			scoreBoard[i][j] *= viewCount[board[i][j]];
+			for(int k = board[i][j]; k >= 0; --k){
+				viewCount[k] = 0;
 			}
+			uInc(viewCount);
 		}
 	}
-	for(int i = 0; i < cCount; ++i){
-		cMax = -1;
-		for(int j = rCount - 1; j >= 0; --j){
-			if(cMax < board[j][i]){
-				vis[j][i] = 1;
-				cMax = board[j][i];
+	for(int j = 0; j < cCount; ++j){
+		memset(viewCount, 0, sizeof(int) * 10);
+		for(int i = rCount - 1; i >= 0; --i){
+			scoreBoard[i][j] *= viewCount[board[i][j]];
+			for(int k = board[i][j]; k >= 0; --k){
+				viewCount[k] = 0;
 			}
+			uInc(viewCount);
 		}
 	}
 	int sum = 0;
@@ -74,13 +86,13 @@ int main(){
 	for(int i = 0; i < rCount; ++i){
 		//printf("TEST\n");
 		for(int j = 0; j < cCount; ++j){
-			if(vis[i][j]){
-				++sum;
+			if(scoreBoard[i][j] > sum){
+				sum = scoreBoard[i][j];
 			}
-			//printf("%d ", vis[i][j]);
+			printf("%d ", scoreBoard[i][j]);
 		}
-		//printf("\n");
+		printf("\n");
 	}
-	printf("SUM: %d\n", sum);
+	printf("MAX: %d\n", sum);
 	return 0;
 }
