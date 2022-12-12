@@ -2,6 +2,8 @@
 #include <stdlib.h>
 #include <string.h>
 
+#include "vector.h"
+
 int main(){
 	char buff[256];
 	printf("Input input file name:\n");
