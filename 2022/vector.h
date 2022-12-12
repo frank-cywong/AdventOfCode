@@ -23,6 +23,8 @@ void vdelete(vector *v, int index);
 
 void vremovelast(vector *v);
 
+void vclear(vector *v);
+
 vector * vfree(vector *v);
 
 void vprint(vector *v);

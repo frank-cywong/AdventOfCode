@@ -68,6 +68,10 @@ void vremovelast(vector *v){
 	}
 }
 
+void vclear(vector *v){
+	v->size = 0;
+}
+
 vector * vfree(vector *v){
 	free(v->p);
 	v->capacity = 0;
