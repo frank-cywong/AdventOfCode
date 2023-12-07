@@ -25,6 +25,11 @@ hs_err_pid*
 # Executables / Binaries
 *.exe
 *.prog
+*.elf
+
+# Object files
+*.o
+!vector.o
 
 # IO files
 # *.in
